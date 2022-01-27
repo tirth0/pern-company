@@ -7,7 +7,7 @@ function App() {
   return (
     <Fragment>
       <div className="container">
-        This is brand new lmao
+        
         <InputTodo />
         <ListTodos />
       </div>
