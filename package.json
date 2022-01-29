@@ -17,7 +17,7 @@
     
     "seed-undo": "npx sequelize-cli db:seed:undo:all",
     "init-db" : "npm run undo-migrate && npm run migrate && npm run seed ",
-    "heroku-postbuild": "cd client && npm install && npm run build && npm run init-db"
+    "heroku-postbuild": "cd client && npm install && npm run build && cd .. && npm run init-db"
   },
   "author": "henry",
   "license": "ISC",
