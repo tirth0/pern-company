@@ -8,7 +8,7 @@
     "npm": "6.14.2"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "npm run init-db && node index.js",
     "make-model": "npx sequelize-cli model:generate --name Company --attributes name:string employeeCount:int",
     "dev": "nodemon --exec babel-node index.js",
     "migrate": "npx sequelize-cli db:migrate",
@@ -17,7 +17,7 @@
     
     "seed-undo": "npx sequelize-cli db:seed:undo:all",
     "init-db" : "npm run undo-migrate && npm run migrate && npm run seed ",
-    "heroku-postbuild": "cd client && npm install && npm run build && cd .. && npm run init-db"
+    "heroku-postbuild": "cd client && npm install && npm run build "
   },
   "author": "henry",
   "license": "ISC",
