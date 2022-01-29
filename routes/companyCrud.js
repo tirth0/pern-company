@@ -273,9 +273,7 @@ router.post('/get-tasks-by-user', passport.authenticate('company', {session:fals
                     where : {
                         status : status
                     }
-
                 }]
-                
             }],
             where : {
                 id : id

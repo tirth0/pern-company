@@ -7,7 +7,7 @@ import auth from './routes/auth'
 import companyCrud from './routes/companyCrud'
 require('./middleware/passport')
 const app = express();
-const PORT = process.env.PORT || 5025;
+const PORT = process.env.PORT || 5000;
 
 //process.env.PORT
 //process.env.NODE_ENV => production or undefined

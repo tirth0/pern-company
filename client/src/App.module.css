@@ -1,0 +1,19 @@
+.fab{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    color: white;
+    background-color: #5893f1;
+    border: none;
+    outline: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 0.5em 0.9em;
+    border-radius: 100%;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.fab:focus, .fab:active{
+    outline: none;
+}

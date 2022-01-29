@@ -1,15 +1,20 @@
-import React, { Fragment } from "react";
-import InputTodo from "./components/InputTodo";
-import ListTodos from "./components/ListTodos";
+import React, { Fragment, useState } from "react";
 import "./App.css";
-
+import classes from './App.module.css'
+import AddModal from './Components/AddModal'
 function App() {
+
+  const [add, setAdd] = useState(true);
+  
   return (
     <Fragment>
-      <div className="container">
+      <div className={classes.container}>
         
-        <InputTodo />
-        <ListTodos />
+        <button  className={classes.fab}>+</button>
+        {
+          add?<AddModal/>:null
+        }
+       
       </div>
     </Fragment>
   );
