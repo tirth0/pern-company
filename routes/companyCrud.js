@@ -60,10 +60,12 @@ router.post('/create-list', passport.authenticate('company', {session:false}), a
     let transaction = await sequelize.transaction();
     try {
         const l = await ListDetails.findOne({
-            name
+            where : {
+                name : name,
+                companyId : companyId
+            }
         })
         if (l) {
-            console.log(l)
             return res.status(400).json({
                 message: 'List already exists'
             })
@@ -91,7 +93,15 @@ router.post('/create-task', passport.authenticate('company', {session:false}), a
     let transaction = await sequelize.transaction();
     try {
         const t = await TaskDetails.findOne({
-            name
+            include : [{
+                model : Task,
+                where : {
+                    listId : listId
+                }
+            }],
+           where : {
+               name : name,
+            }
         })
         if (t) {
             return res.status(400).json({
@@ -99,23 +109,31 @@ router.post('/create-task', passport.authenticate('company', {session:false}), a
             })
         }
 
-        const task = await Task.create({
-            listId : listId,
-            
-        }, {transaction})
         const taskDetails = await TaskDetails.create({
             name,
             description,
             status,
-            taskId : task.id
         },{transaction});
+
+        const task = await Task.create({
+            listId : listId,
+            id : taskDetails.id
+            
+        }, {transaction})
+
+        const list = await List.create({
+            listId : listId,
+            taskId : task.id
+            
+        }, {transaction})
+        
         
 
         transaction.commit();
         res.status(200).json({taskDetails, message: "Task Created"});
     } catch (err) {
         transaction.rollback();
-        console.error(err.message);
+        console.error("***",err.message);
         res.status(500).json({code : 'Server Error'});
     }
 })
@@ -124,9 +142,33 @@ router.post('/update-task', passport.authenticate('company', {session:false}), a
     const {taskId, assign, status} = req.body;
     let transaction = await sequelize.transaction();
     try {
-        const task = await Task.findOne({
-            taskId
+        const join = await List.findOne({
+            where  : {
+                id : taskId,
+                employeeId : assign
+            }
         })
+
+        if(join){
+            return res.status(400).json({message : 'Task already Assigned'});
+        }
+
+        const task = await Task.findOne({
+            where : {
+                id : taskId
+            }
+        })
+        
+        if (assign){
+            const list = await List.create({
+                employeeId : assign,
+                listId : task.listId,
+                taskId : taskId
+            },
+            {transaction});
+            
+        }
+
         if (status)
         {
             const taskDetails = await TaskDetails.update({
@@ -137,15 +179,7 @@ router.post('/update-task', passport.authenticate('company', {session:false}), a
             )
         }
 
-        if (assign){
-            const list = await List.create({
-                employeeId : assign,
-                listId : task.listId,
-                taskId : taskId
-            },
-            {transaction});
-            
-        }
+        
         transaction.commit();
         res.status(200).json({message: "Task Updated"});
     }
@@ -213,11 +247,7 @@ router.get('/get-all-users', passport.authenticate('company', {session:false}), 
         const data = await User.findAll({
             include : [{
                 model : Company,
-                attributes : ['id'],
                 required : true,
-                through : {
-                    attributes : []
-                },
             }]
         });
         res.status(200).json({data});
@@ -228,6 +258,37 @@ router.get('/get-all-users', passport.authenticate('company', {session:false}), 
         res.status(500).json({code : 'Server Error'});
     }
 });
+
+
+router.post('/get-tasks-by-user', passport.authenticate('company', {session:false}), async (req, res) => {
+    const {id, status} = req.body;
+    try {
+        const data = await User.findAll({
+            include : [{
+                model : Task,
+                required : true,
+                include : [{
+                    model : TaskDetails,
+                    required : true,
+                    where : {
+                        status : status
+                    }
+
+                }]
+                
+            }],
+            where : {
+                id : id
+            }
+        });
+        res.status(200).json({data});
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({code : 'Server Error'});
+    }
+});
+            
             
 
 

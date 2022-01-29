@@ -101,11 +101,17 @@ module.exports = {
 
 
     await queryInterface.createTable('list', {
+      id : {
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+        type: Sequelize.INTEGER,
+        onDelete : 'Cascade',
+        onUpdate : 'Cascade'
+      },
       listId: {
         allowNull: false,
-        autoIncrement : true,
         type: Sequelize.INTEGER,
-        primaryKey: true,
         onDelete : 'Cascade',
         onUpdate : 'Cascade'
       },

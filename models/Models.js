@@ -141,10 +141,17 @@ export const TaskDetails = sequelize.define('task_details', {
 
 
 export const List = sequelize.define('list', {
-    listId: {
+    id : {
       allowNull: false,
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement : true,
+      onDelete : 'Cascade',
+      onUpdate : 'Cascade'
+    },
+    listId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
       onDelete : 'Cascade',
       onUpdate : 'Cascade'
     },
@@ -213,6 +220,7 @@ User.belongsTo(Company, {
 
 User.belongsToMany(Task, {
   through: 'list',
+  unique : false,
   foreignKey: 'employeeId',
   onDelete : 'Cascade',
 })
@@ -221,6 +229,7 @@ User.belongsToMany(Task, {
 
 Task.belongsToMany(User, {
   through: 'list',
+  unique : false,
   foreignKey: 'taskId',
   onDelete : 'Cascade',
 })
@@ -229,6 +238,7 @@ Task.hasMany(List, {foreignKey: 'taskId'});
 
 User.belongsToMany(ListDetails, {
   through: 'list',
+  unique : false,
   foreignKey: 'employeeId',
   onDelete : 'Cascade',
 })
@@ -237,6 +247,7 @@ User.belongsToMany(ListDetails, {
 
 ListDetails.belongsToMany(User, {
   through: 'list',
+  unique : false,
   foreignKey: 'listId',
   onDelete : 'Cascade',
 })
@@ -249,6 +260,13 @@ TaskDetails.hasOne(Task, {
   foreignKey : 'id',
   onDelete : 'Cascade',
   onUpdate : 'Cascade'
+})
+
+Task.belongsTo(TaskDetails,{
+  foreignKey : 'id',
+  onDelete : 'Cascade',
+  onUpdate : 'Cascade'
+  
 })
 
 
