@@ -6,11 +6,14 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelete : 'Cascade',
+        onUpdate : 'Cascade'
       },
       name: {
         type: Sequelize.STRING,
-        allowNull : false
+        allowNull : false,
+        
       },
       employeeCount : {
         type: Sequelize.INTEGER,
@@ -19,7 +22,7 @@ module.exports = {
       password : {
         type: Sequelize.STRING,
         allowNull : false
-        
+
       },
       createdAt: {
         allowNull: false,
@@ -35,9 +38,11 @@ module.exports = {
     await queryInterface.createTable('user', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        autoIncrement: true,
+        type: Sequelize.INTEGER,
+        onDelete : 'Cascade',
+        onUpdate : 'Cascade'
       },
       companyId : {
         type : Sequelize.INTEGER,
@@ -53,8 +58,13 @@ module.exports = {
       lastName: {
         type: Sequelize.STRING
       },
+      password : {
+        type: Sequelize.STRING,
+        allowNull : false
+      },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique : true
       },
       createdAt: {
         allowNull: false,
@@ -66,13 +76,76 @@ module.exports = {
       }
     });
 
+    await queryInterface.createTable('task', {
+      id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        onDelete : 'Cascade',
+        onUpdate : 'Cascade'
+
+      },
+      listId : {
+        type : Sequelize.INTEGER,
+        allowNull : false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+  });
+
+
+    await queryInterface.createTable('list', {
+      listId: {
+        allowNull: false,
+        autoIncrement : true,
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        onDelete : 'Cascade',
+        onUpdate : 'Cascade'
+      },
+      
+      employeeId : {
+        type : Sequelize.INTEGER,
+        
+      },
+      taskId : {
+        type : Sequelize.INTEGER,
+        
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    })
+
+    
+
     await queryInterface.createTable('list_details', {
       id: {
         allowNull: false,
         autoIncrement: true,
         type: Sequelize.INTEGER,
         primaryKey: true,
-
+        onDelete : 'Cascade',
+        onUpdate : 'Cascade'
+      },
+      companyId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references : {
+          model : 'company',
+          key : 'id'
+        },
       },
       name : {
         type : Sequelize.STRING,
@@ -98,6 +171,12 @@ module.exports = {
         autoIncrement: true,
         type: Sequelize.INTEGER,
         primaryKey: true,
+        onDelete : 'Cascade',
+        onUpdate : 'Cascade'
+      },
+      taskId : {
+        type : Sequelize.INTEGER,
+        
       },
       name : {
         type : Sequelize.STRING,
@@ -120,76 +199,6 @@ module.exports = {
       }
     });
 
-    await queryInterface.createTable('list', {
-      listId: {
-        allowNull: false,
-        autoIncrement: true,
-        type: Sequelize.INTEGER,
-        references : {
-          model : 'list_details',
-          key : 'id'
-        },
-        primaryKey: true,
-
-      },
-      employeeId : {
-        type : Sequelize.INTEGER,
-        allowNull : false,
-        references : {
-          model : 'user',
-          key : 'id'
-        },
-        primaryKey: true,
-      },
-      taskId : {
-        type : Sequelize.INTEGER,
-        allowNull : false,
-        references : {
-          model : 'task_details',
-          key : 'id'
-        },
-        primaryKey: true,
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
-
-    await queryInterface.createTable('task', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        type: Sequelize.INTEGER,
-        references : {
-          model : 'list_details',
-          key : 'id'
-        },
-        primaryKey: true,
-
-      },
-      taskId : {
-        type : Sequelize.INTEGER,
-        allowNull : false,
-        references : {
-          model : 'task_details',
-          key : 'id'
-        },
-        primaryKey: true,
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
 
     
   },

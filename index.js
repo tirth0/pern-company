@@ -1,9 +1,13 @@
 import express from 'express';
+require('dotenv').config();
 import cors from 'cors';
 import sequelize from './db'
 import path from 'path'
+import auth from './routes/auth'
+import companyCrud from './routes/companyCrud'
+require('./middleware/passport')
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5025;
 
 //process.env.PORT
 //process.env.NODE_ENV => production or undefined
@@ -11,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 //middleware
 app.use(cors());
 app.use(express.json()); // => allows us to access the req.body
-
+app.use(express.urlencoded({extended: true}))
 // app.use(express.static(path.join(__dirname, "client/build")));
 // app.use(express.static("./client/build")); => for demonstration
 
@@ -100,9 +104,11 @@ console.log(path.join(__dirname, "client/build"));
 //   }
 // });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/build/index.html"));
-});
+app.use("/api/v1/auth", auth);
+app.use("/api/v1/crud", companyCrud);
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "client/build/index.html"));
+// });
 
 app.listen(PORT, () => {
   console.log(`Server is starting on port ${PORT}`);

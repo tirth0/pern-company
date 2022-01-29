@@ -13,15 +13,20 @@
     "dev": "nodemon --exec babel-node index.js",
     "migrate": "npx sequelize-cli db:migrate",
     "undo-migrate": "npx sequelize-cli db:migrate:undo",
+    "seed": "npx sequelize-cli db:seed:all --debug",
+    "seed-undo": "npx sequelize-cli db:seed:undo:all",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "henry",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "faker": "^6.6.6",
     "jsonwebtoken": "^8.5.1",
+    "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
@@ -32,6 +37,7 @@
     "@babel/core": "^7.16.0",
     "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
+    "@faker-js/faker": "^6.0.0-alpha.5",
     "@types/bcrypt": "^5.0.0",
     "nodemon": "^2.0.15",
     "sequelize-cli": "^6.4.1"
