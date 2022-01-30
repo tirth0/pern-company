@@ -1,22 +1,38 @@
-import React, { Fragment, useState } from "react";
-import "./App.css";
-import classes from './App.module.css'
-import AddModal from './Components/AddModal'
-function App() {
+import React, {useState} from 'react'
+import './App.css';
+import { Routes, Route, Link } from "react-router-dom";
+import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core';
+//Component imports
+import Home from './Components/Home/Home'
+import Auth from './Components/Authentication/Auth'
+import Nav from './Components/Navigation/Nav'
 
-  const [add, setAdd] = useState(true);
-  
+
+
+
+function App() {
+	const [colorScheme, setColorScheme] = useState('light');
+	const toggleColorScheme = (value) =>
+	setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
   return (
-    <Fragment>
-      <div className={classes.container}>
-        
-        <button  className={classes.fab}>+</button>
-        {
-          add?<AddModal/>:null
-        }
-       
-      </div>
-    </Fragment>
+	<ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+	<MantineProvider 
+		theme={{ 
+			colorScheme,
+			fontFamily: 'Verdana, sans-serif',
+			fontFamilyMonospace: 'Monaco, Courier, monospace',
+			headings: { fontFamily: 'Greycliff CF, sans-serif' }, 
+		}}
+	>
+		<div className="App">
+			<Nav />
+			<Routes>
+				<Route path="/login" element={<Auth />} />
+				<Route path="/" element={<Home />} />
+			</Routes>
+		</div>
+	</MantineProvider>
+    </ColorSchemeProvider>
   );
 }
 
