@@ -9,7 +9,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
             width : '100%',
             fontFamily : theme.fontFamilyMonospace,
             height : '100%',
-            backgroundColor : theme.colorScheme === 'dark'? theme.colors.gray[9]:'white',
+            // backgroundColor : theme.colorScheme === 'dark'? theme.colors.gray[9]:'white',
         },
         left : {
             textAlign : 'left',

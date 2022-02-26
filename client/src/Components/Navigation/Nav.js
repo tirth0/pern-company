@@ -9,11 +9,12 @@ export default function Nav() {
     const {classes, cx} = useStyles();
     const dark = colorScheme === 'dark';
     return (
+        <>
         <div>
             <nav className={classes.nav}>
                 <ul className={classes.navList}>
                     <li >
-                        <Link className={classes.listItem} to="/">Home</Link>
+                        <Link className={classes.listItem} to="/project">Home</Link>
                     </li>
                     <li >
                         <Link className={classes.listItem} to="/login">Join</Link>
@@ -33,6 +34,12 @@ export default function Nav() {
                     </ActionIcon>
                 </ul>
             </nav>
+            <nav className={classes.nav2}>
+                
+            </nav>
+            
         </div>
+        
+        </>
     )
 }

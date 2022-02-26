@@ -6,14 +6,14 @@ import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core
 import Home from './Components/Home/Home'
 import Auth from './Components/Authentication/Auth'
 import Nav from './Components/Navigation/Nav'
-
-
+import Project from './Components/Project/Project'
 
 
 function App() {
 	const [colorScheme, setColorScheme] = useState('light');
 	const toggleColorScheme = (value) =>
 	setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+
   return (
 	<ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
 	<MantineProvider 
@@ -24,11 +24,19 @@ function App() {
 			headings: { fontFamily: 'Greycliff CF, sans-serif' }, 
 		}}
 	>
-		<div className="App">
+		<div className="App"
+		
+			style = {{
+				backgroundImage : colorScheme === 'dark'?"url('/dark.jpeg')":"url('/light.jpeg')",
+				backgroundRepeat : "no-repeat",
+				backgroundSize : "cover"
+			}}
+		>
 			<Nav />
 			<Routes>
 				<Route path="/login" element={<Auth />} />
 				<Route path="/" element={<Home />} />
+				<Route path="/project" element={<Project/>}/>
 			</Routes>
 		</div>
 	</MantineProvider>
